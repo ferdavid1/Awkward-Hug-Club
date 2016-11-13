@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>My Facebook Login Page</title>
+<link href="css/fbstyle.css" rel="stylesheet" type="text/css">
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '287808051592616', // App ID
+        channelUrl : 'http://awkwardhugclub.com', // Channel File
+        status     : true, // check login status
+        cookie     : true, // enable cookies to allow the server to access the session
+        xfbml      : true, // parse XFBML
+        oauth      : true});
+        };
+    // Load the SDK Asynchronously
+    (function() {
+            var e = document.createElement('script');
+            e.type = 'text/javascript';
+            e.src = document.location.protocol +
+                '//connect.facebook.net/en_US/all.js';
+            e.async = true;
+            document.getElementById('fb-root').appendChild(e);
+            }());
+        </script>
+
+    <div class="fb-login-button" show-faces="true" width="200" max-rows="5">Login with Facebook</div>
+    <script>
+        FB.login(function(response) 
+        {
+          if (response.authResponse) 
+        {
+          //login success
+         } 
+         else 
+         {
+         alert('User cancelled login or did not fully authorize.');
+         }
+
+        }, {scope: 'permissions that app needs'})
+    </script>
+
+</body>
+</html>

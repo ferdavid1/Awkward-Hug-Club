@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>My Facebook Login Page</title>
+    <link href="css/style.css" rel='stylesheet' type='text/css' />
+    <script type="text/javascript">
+      function postToWall() {
+        var params = {};
+        params['message'] = 'Visit Eureka! - https://ykyuen.wordpress.com';
+        params['name'] = 'Eureka!';
+        params['link'] = 'https://ykyuen.wordpress.com';
+        params['picture'] = 'http://1.gravatar.com/blavatar/9c99f3c76686bf5edf1ea460356f00f2?s=128&ts=1321625806';
+        params['description'] = 'Hope my posts are useful to you. =)';
+         
+        FB.api('/me/feed', 'post', params, function(response) {
+          if (!response || response.error) {
+            alert('Error occured');
+          } else {
+            alert('Post ID: ' + response.id);
+          }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script>
+      FB.init({ 
+        appId:<287808051592616>, cookie:true, 
+        status:true, xfbml:true
+      });
+    </script>
+    <fb:login-button perms="publish_stream">Login with Facebook</fb:login-button>
+    <a href="javascript:postToWall()">Post To Wall</a>
+  </body>
+ </html>
