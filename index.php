@@ -21,9 +21,16 @@ if($page<=0){
 }
 $prev = $page - 1;
 $next = $page + 1;
-$query = $db->prepare("SELECT post_id, title, body AS body, category FROM posts INNER JOIN categories ON categories.category_id=posts.category_id order by post_id desc limit $start, $per_page");
+$query = $db->prepare("SELECT post_id, title, body AS body, category, image, caption FROM posts INNER JOIN categories ON categories.category_id=posts.category_id order by post_id desc limit $start, $per_page");
 $query->execute();
-$query->bind_result($post_id, $title, $body, $category);
+if (!$query){
+    echo "Database error";
+}
+$query->bind_result($post_id, $title, $body, $category, $image, $text);
+while($imgarray = mysqli_fetch_array($query->execute()));
+{
+    echo "<img src='php/imgView.php?imgId=".$imgarray."' />";
+}
 ?>
 
 <!DOCTYPE HTML>
@@ -50,8 +57,8 @@ $query->bind_result($post_id, $title, $body, $category);
         <?php echo '<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>' ?>
         <!--end slider -->
                 <!--script-->
-<?php echo '<script type="text/javascript" src="js/move-top.js"></script>
-<script type="text/javascript" src="js/easing.js"></script>' ?>
+<?php echo '<script type="text/javascript" src="move-top.js"></script>
+<script type="text/javascript" src="easing.js"></script>' ?>
 <!--/script-->
 <?php echo'<script type="text/javascript">
             jQuery(document).ready(function($) {

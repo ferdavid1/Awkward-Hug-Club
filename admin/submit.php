@@ -16,24 +16,31 @@ if(isset($_POST['submit'])){
     $title = $_POST['title'];
     $body = $_POST['body'];
     $category = $_POST['category'];
-    //$image = $_POST[''];
-        //link everything to the db
-   	$title = $db->real_escape_string($title);
+    $title = $db->real_escape_string($title);
    	$body = $db->real_escape_string($body);
     $user_id = $_SESSION['user_id'];
     $date = date('Y-m-d G:i:s');
     $body = htmlentities($body);
+    $text = $_POST['text'];
+    #$target = "post_images/";
+	$image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
+	#echo getcwd();
     if($title && $body && $category){
-        $query = $db->query("INSERT INTO posts(user_id, title, body, category_id, posted) VALUES ('$user_id', '$title', '$body', '$category', '$date')");
+        $query = $db->query("INSERT INTO posts(user_id, title, body, category_id, posted, image_id, image, caption) VALUES ('$user_id', '$title', '$body', '$category', '$date', '1', '{$image}', '{$text}')");
     	if($query) {
             echo "Post Added";
-
-        }else {
-            echo "Error";
-        }
-    }else {
+		}else{
+			echo "Image Database error";
+		} 
+	 	#if(move_uploaded_file($_FILES['image']['tmp_name'], $target.$image)){
+	 		#echo "Image uploaded locally";
+		#}else{
+			#echo "Error uploading image";
+		#}
+	}else {
         echo "Missing information";
     }
+    
 }
 ?>
 
@@ -118,7 +125,7 @@ if(isset($_POST['submit'])){
 
             <!-- Blog Post Content Column -->
             <div class="col-lg-8">
-	            <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post">
+	            <form action="<?php echo $_SERVER["PHP_SELF"]?>" method="post" enctype="multipart/form-data">
 	               <!-- Blog Post -->
 
                     <!-- Title -->
@@ -144,21 +151,21 @@ if(isset($_POST['submit'])){
 	                    ?>
 		            </select>
 		            </p>
+		            <input value="1000000" name="size" type="hidden"/>
+                	<input type="file" name="image"/>
+                	<textarea name = "text" cols = "10" rows="1" placeholder="Caption this!"></textarea>
+                	<!-- <input type="submit" name="upload" value = "Upload Image">
+                	 -->
+                	<hr>
 		            <input type="submit" name="submit" value="Submit" />
-		            <hr>
-		            <hr>
-		                
+		            <hr>          
 	            </form> 
-
-	       
 	        </div>
 
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>	           
                 <!-- Preview Image -->
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <label class="control-label">Select File</label>
-                <input id="input-4" name="input4[]" type="file" multiple class="file-loading">
-                <script>
+                
+              <!--  <script>
                 $(document).on('ready', function() {
                     $("#input-4").fileinput({showCaption: false});
                 });
@@ -175,8 +182,8 @@ if(isset($_POST['submit'])){
 			</p>
 			
 				
-		 </div>
-                <!-- Post to FB -->
+		 </div> -->
+                <!-- Post to FB --> 
 
 
 		<script type="text/javascript">
